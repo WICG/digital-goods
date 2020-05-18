@@ -138,6 +138,16 @@ new Intl.NumberFormat(
 
 This will correctly format the price in the given locale (which should be set to the user’s locale), in the currency that the user will use to make the purchase.
 
+### Analysis of various APIs
+
+#### [Play Store BillingClient API](https://developer.android.com/reference/com/android/billingclient/api/BillingClient)
+*    Uses the term “SKU” for items.
+*    No server-side distinction between “consumable” and “one-time purchase” items. Choice is dynamic: call “consume” to consume an item and make it available for purchase again, call “acknowledge” to acknowledge purchase of a one-time item and not make it available again.
+
+#### [Samsung in-app purchases API](https://developer.samsung.com/iap/programming-guide.html)
+*    Uses the term “Item” for items.
+*    Configure each item in the server UI to be either “consumable” or “one-time purchase”. Call “consume” to consume a consumable item. No acknowledgement required for one-time purchase items.
+
 ### Open questions
 
 *   Do we need to support [pending transactions](https://developer.android.com/google/play/billing/billing_library_overview#pending)? (i.e., when your app starts, you’re expected to query pending transactions which were made out-of-app, and acknowledge them).
