@@ -28,10 +28,9 @@ Sites using the proposed API would still need to be configured to work with each
 Usage of the API would begin with a call to `Window.getDigitalGoodsService()`, which returns a promise yielding null if there is no DigitalGoodsService:
 
 ```js
-const itemService = await getDigitalGoodsService();
-if (itemService === null ||
-    itemService.paymentMethod !== "https://example.com/billing") {
-    // Not using our preferred item service.
+const itemService = await getDigitalGoodsService("https://example.com/billing");
+if (itemService === null) {
+    // Our preferred item service is not available.
     // Use a normal web-based payment flow.
     return;
 }
@@ -91,16 +90,12 @@ itemService.acknowledge(purchaseToken);
 
 ```webidl
 partial interface Window {
-  // Resolves the promise with null if the website is not running in an environment
-  // where a product service is available.
-  Promise<DigitalGoodsService?> getDigitalGoodsService();
+  // Resolves the promise with null if the product service associated with the
+  // given payment method is unavailable.
+  Promise<DigitalGoodsService?> getDigitalGoodsService(DOMString paymentMethod);
 };
 
 interface DigitalGoodsService {
-  // The payment method identifier to use for purchases in conjunction with this
-  // service.
-  DOMString paymentMethod;
-
   Promise<sequence<ItemDetails>> getDetails(sequence<ItemId> itemIds);
 
   Promise<void> acknowledge(PurchaseToken purchaseToken,
