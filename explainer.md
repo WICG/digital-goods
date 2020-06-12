@@ -42,7 +42,7 @@ The `getDetails` method returns server-side details about a given set of items, 
 
 
 ```js
-details = await itemService.getDetails(["shiny_sword", "gem"], "one_time");
+details = await itemService.getDetails(['shiny_sword', 'gem']);
 for (item in details) {
   const priceStr = new Intl.NumberFormat(
       locale,
@@ -52,6 +52,9 @@ for (item in details) {
 }
 ```
 
+
+The returned `itemDetails` sequence may be in any order and may not include an item if it doesn't exist on the server (i.e. there is not a 1:1 correspondence between the input list and output).
+ 
 The item ID is a string representing the primary key of the items, configured in the store server. There is no function to get a list of item IDs; those should be hard-coded in the client code or fetched from the developer’s own server.
 
 The item’s `price` is a <code>[PaymentCurrencyAmount](https://developer.mozilla.org/en-US/docs/Web/API/PaymentCurrencyAmount)</code> containing the current price of the item in the user’s current region and currency. It is designed to be formatted for the user’s current locale using <code>[Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)</code>, as shown above.
@@ -62,7 +65,7 @@ The purchase flow itself uses the [Payment Request API](https://w3c.github.io/pa
 
 ```js
 new PaymentRequest(
-  [{supportedMethods: "https://example.com/billing",
+  [{supportedMethods: 'https://example.com/billing',
     data: {itemId: item.id}}]);
 ```
 
@@ -70,47 +73,47 @@ Note that as part of this proposal, we are proposing to [remove the requirement]
 
 ### Acknowledging a purchase
 
-Some stores will require that the user acknowledge a purchase once it has succeeded. In this case, the payment response will return a `PurchaseToken`, which can be used with the `consume` and `acknowledge` methods.
+Some stores will require that the user acknowledge a purchase once it has succeeded. In this case, the payment response will return a `PurchaseToken`, which can be used with the `acknowledge` method.
 
-Items that are designed to be purchased multiple times must be consumed. An example of a consumable purchase is an in-game powerup that makes the player stronger for a short period of time. Once it is consumed, it can be purchased again.
+Items that are designed to be purchased multiple times must be acknowledged with the `repeatable` flag. An example of a repeatable purchase is an in-game powerup that makes the player stronger for a short period of time. Once it is acknowledged with the `repeatable` flag, it can be purchased again.
 
 ```js
-itemService.consume(purchaseToken);
+itemService.acknowledge(purchaseToken, 'repeatable');
 ```
 
-Items that are designed to be purchased once and last permanently in the user’s app must be acknowledged. An example of an acknowledgeable purchase is a one-time “remove ads” option. Once acknowledged, the app is expected to remember the user’s purchase and continue providing the purchased capability.
+Items that are designed to be purchased once and last permanently in the user’s app must be acknowledged with the `onetime` flag. An example of a one-time purchase is a “remove ads” option. Once acknowledged with the `onetime` flag, the app is expected to remember the user’s purchase and continue providing the purchased capability.
 
 
 ```js
-itemService.acknowledge(purchaseToken);
+itemService.acknowledge(purchaseToken, 'onetime');
 ```
 
 ## Full API interface
 
 
 ```webidl
+[SecureContext]
 partial interface Window {
-  // Resolves the promise with null if the product service associated with the
-  // given payment method is unavailable.
+  // Resolves the promise with null if there is no service associated with the
+  // given payment method.
   Promise<DigitalGoodsService?> getDigitalGoodsService(DOMString paymentMethod);
 };
 
+[SecureContext]
 interface DigitalGoodsService {
-  Promise<sequence<ItemDetails>> getDetails(sequence<ItemId> itemIds);
+  Promise<sequence<ItemDetails>> getDetails(sequence<DOMString> itemIds);
 
-  Promise<void> acknowledge(PurchaseToken purchaseToken,
-                            optional AcknowledgeParams params = {});
+  Promise<void> acknowledge(DOMString purchaseToken,
+                            PurchaseType purchaseType);
 };
 
-dictionary AcknowledgeParams {
-  Boolean makeAvailableAgain = true;
+enum PurchaseType {
+  "repeatable",
+  "onetime",
 };
-
-typedef DOMString ItemId;
-typedef DOMString PurchaseToken;
 
 dictionary ItemDetails {
-  ItemId id;
+  DOMString itemId;
   DOMString title;
   DOMString description;
   PaymentCurrencyAmount price;
@@ -148,6 +151,8 @@ This will correctly format the price in the given locale (which should be set to
 *   Do we need to support [pending transactions](https://developer.android.com/google/play/billing/billing_library_overview#pending)? (i.e., when your app starts, you’re expected to query pending transactions which were made out-of-app, and acknowledge them).
     *   In the Play Billing backend, this means you’re supposed to call [BillingClient.queryPurchases](https://developer.android.com/reference/com/android/billingclient/api/BillingClient#querypurchases) to get the list of pending unacknowledged transactions.
     *   See [this post](https://android-developers.googleblog.com/2019/06/advanced-in-app-billing-handling.html) for details.
+
+## Resolved issues
 *   Can we combine acknowledge() and consume()? Only reason we can see to _not_ do that is that the Play Billing implementation would not know which method to call, unless we can get it from the SkuDetails, which I don’t see a field for.
     *   It [looks like](https://developer.android.com/google/play/billing/billing_onetime) the Play Store doesn’t distinguish the two on the server. The only way to distinguish this is whether you call acknowledge() or consume().
     *   Could look at this as a Boolean option on a single method, “make\_available\_again”.
