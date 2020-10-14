@@ -17,7 +17,7 @@ Yes.
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?
 
-The API involves an already-authenticated user and their purchases from that origin, but does expose any other information about the user. No information is persisted.
+The API involves an already-authenticated user and their purchases from that origin, but doesn't expose any other information about the user. No information is persisted.
 
 ## 2.4 How does this specification deal with sensitive information?
 
@@ -25,7 +25,7 @@ No special treatment.
 
 ## 2.5 Does this specification introduce new state for an origin that persists across browsing sessions?
 
-No? TODO Glen: double check this. How does auth work on the backend?
+Yes, but this state cannot be created explicitly - the user has to buy something through a separate API for state to show in this API.
 
 ## 2.6 What information from the underlying platform, e.g. configuration data, is exposed by this specification to an origin?
 
@@ -66,7 +66,7 @@ No change.
 
 ## 2.15 Does this specification have a "Security Considerations" and "Privacy Considerations" section?
 
-No? TODO Glen: add something, even if just "There are no known security or privacy impacts of this feature.".
+Yes. https://github.com/WICG/digital-goods/blob/master/explainer.md#security-and-privacy-considerations
 
 ## 2.16 Does this specification allow downgrading default security characteristics?
 
