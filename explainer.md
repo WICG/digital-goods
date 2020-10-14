@@ -48,7 +48,7 @@ for (item in details) {
       locale,
       {style: 'currency', currency: item.price.currency}
     ).format(item.price.value);
-  AddShopMenuItem(item.id, item.title, priceStr, item.description);
+  AddShopMenuItem(item.itemId, item.title, priceStr, item.description);
 }
 ```
 
@@ -66,7 +66,7 @@ The purchase flow itself uses the [Payment Request API](https://w3c.github.io/pa
 ```js
 new PaymentRequest(
   [{supportedMethods: 'https://example.com/billing',
-    data: {itemId: item.id}}]);
+    data: {itemId: item.itemId}}]);
 ```
 
 Note that as part of this proposal, we are proposing to [remove the requirement](https://github.com/w3c/payment-request/issues/912) of the `total` member of the `details` dictionary, since the source of truth for the item price (that will be displayed to the user in the purchase confirmation dialog) is known by the server, based on the item ID. The exact format of the `data` member is up to the store (the spec simply says this is an `object`). Some stores may allow multiple items to be purchased at the same time, others only a single item.
