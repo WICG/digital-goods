@@ -136,6 +136,12 @@ new Intl.NumberFormat(
 
 This will correctly format the price in the given locale (which should be set to the user’s locale), in the currency that the user will use to make the purchase.
 
+## Security and Privacy Considerations
+
+This API should be used in a secure context.
+
+This API assumes that the user agent has some existing authentication process for the user, e.g. some extra UI when the API is initialised, or some implicit platform or browsing context. Because an authenticated user is likely needed for the API to be meaningful, and information is only exposed for purchases that user has already made through a separate API, there is minimal additional potentially-identifying information to be gained through this API.
+
 ## Analysis of various APIs
 
 ### [Play Store BillingClient API](https://developer.android.com/reference/com/android/billingclient/api/BillingClient)
