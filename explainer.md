@@ -16,7 +16,7 @@ The Payment Request API can be used, with [a minor modification](https://github.
 *   Querying the details (e.g., name, description, regional price) of digital items from the store backend.
     *   Note: Even though the web app developer is ultimately responsible for configuring these items on the server, and could therefore keep track of these without an API, it is important to have a single source of truth, to ensure that the price of items displayed in the app exactly matches the prices that the user will eventually be charged, especially as prices can differ by region, or change at planned times (such as when sale events begin or end).
 *   Consuming or acknowledging purchases. Digital stores typically do not consider a purchase finalized until the client acknowledges the purchase through a separate API call. This acknowledgment is supposed to be performed once the client “activates” the purchase inside the app.
-*   Checking the digital items currently owned by the user (e.g., active subscriptions and non-consumed one-time purchases).
+*   Checking the digital items currently owned by the user (e.g., active subscriptions and non-consumed purchases).
 
 It is typically a requirement for listing an application in a digital store that in-app purchases are made through that store’s billing API. Therefore, access to these operations is a requirement for web apps to be listed in various application stores, if they wish to sell in-app products.
 
@@ -91,7 +91,7 @@ itemService.acknowledge(purchaseToken, 'onetime');
 
 ### Checking existing purchases
 
-The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (eg. whether a subscription, promotional code, or premium upgrade is active) or to recover from flaky network issues during a purchase (eg. item is purchased but not yet acknowledged).
+The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (eg. whether a subscription, promotional code, or permanent upgrade is active) or to recover from flaky network issues during a purchase (e.g. item is purchased but not yet acknowledged).
 
 
 ```js
@@ -141,6 +141,13 @@ dictionary PurchaseDetails {
   DOMString itemId;
   DOMString purchaseToken;
   boolean isAcknowledged;
+  PurchaseState purchaseState;
+};
+
+enum PurchaseState {
+  "unknown",
+  "purchased",
+  "pending",
 };
 ```
 
