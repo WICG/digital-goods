@@ -91,7 +91,7 @@ itemService.acknowledge(purchaseToken, 'onetime');
 
 ### Checking existing purchases
 
-The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (eg. whether a subscription, promotional code, or permanent upgrade is active) or to recover from flaky network issues during a purchase (e.g. item is purchased but not yet acknowledged).
+The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (eg. whether a subscription, promotional code, or permanent upgrade is active) or to recover from network interruptions during a purchase (e.g. item is purchased but not yet acknowledged).
 
 
 ```js
