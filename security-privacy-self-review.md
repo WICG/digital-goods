@@ -62,7 +62,8 @@ Supporting the API in third-party contexts is probably not necessary?
 
 ## 2.14 How does this specification work in the context of a user agent’s Private Browsing or "incognito" mode?
 
-No change.
+The specification assumes an authenticated user, which is not usually the case in incognito mode.
+The user agent _should_ act as if there are no available payment methods in incognito mode.
 
 ## 2.15 Does this specification have a "Security Considerations" and "Privacy Considerations" section?
 
