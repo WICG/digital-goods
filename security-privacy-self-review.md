@@ -17,7 +17,9 @@ Yes.
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?
 
-The API involves an already-authenticated user and their purchases from that origin, but doesn't expose any other information about the user. No information is persisted.
+The API involves a user that is already-authenticated with the user agent, and their purchases from a specific origin, but doesn't expose any new information about the user. If the user makes a purchase from an origin, the information about that purchase may be queryable later by the origin.
+
+However, if the user makes a purchase and later signs out of (or clears data for) the origin while remaining authenticated with the user agent, that purchase information may still be retrievable, making the user identifiable. Implementors should carefully consider what information is exposed.
 
 ## 2.4 How does this specification deal with sensitive information?
 
@@ -25,7 +27,7 @@ No special treatment.
 
 ## 2.5 Does this specification introduce new state for an origin that persists across browsing sessions?
 
-Yes, but this state cannot be created explicitly - the user has to buy something through a separate API for state to show in this API.
+Yes, but this state cannot be created directly - the user has to buy something through a separate API for state to show in this API.
 
 ## 2.6 What information from the underlying platform, e.g. configuration data, is exposed by this specification to an origin?
 
@@ -58,12 +60,12 @@ None.
 
 ## 2.13 How does this specification distinguish between behavior in first-party and third-party contexts?
 
-Supporting the API in third-party contexts is probably not necessary?
+The API should not function in third-party contexts. Furthermore, the API should require the "payment" permission policy, as [defined in the Payment Request API](https://w3c.github.io/payment-request/#permissions-policy) - if disabled, the user agent should act as if there are no available payment methods.
 
 ## 2.14 How does this specification work in the context of a user agent’s Private Browsing or "incognito" mode?
 
 The specification assumes an authenticated user, which is not usually the case in incognito mode.
-The user agent _should_ act as if there are no available payment methods in incognito mode.
+The user agent should act as if there are no available payment methods in incognito mode.
 
 ## 2.15 Does this specification have a "Security Considerations" and "Privacy Considerations" section?
 
