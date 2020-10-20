@@ -142,6 +142,9 @@ dictionary PurchaseDetails {
   DOMString purchaseToken;
   boolean acknowledged;
   PurchaseState purchaseState;
+  // Timestamp in ms since Unix epoch.
+  DOMTimeStamp purchaseTime;
+  boolean willRenew;
 };
 
 enum PurchaseState {
