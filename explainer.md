@@ -16,6 +16,7 @@ The Payment Request API can be used, with [a minor modification](https://github.
 *   Querying the details (e.g., name, description, regional price) of digital items from the store backend.
     *   Note: Even though the web app developer is ultimately responsible for configuring these items on the server, and could therefore keep track of these without an API, it is important to have a single source of truth, to ensure that the price of items displayed in the app exactly matches the prices that the user will eventually be charged, especially as prices can differ by region, or change at planned times (such as when sale events begin or end).
 *   Consuming or acknowledging purchases. Digital stores typically do not consider a purchase finalized until the client acknowledges the purchase through a separate API call. This acknowledgment is supposed to be performed once the client “activates” the purchase inside the app.
+*   Checking the digital items currently owned by the user.
 
 It is typically a requirement for listing an application in a digital store that in-app purchases are made through that store’s billing API. Therefore, access to these operations is a requirement for web apps to be listed in various application stores, if they wish to sell in-app products.
 
@@ -43,7 +44,7 @@ The `getDetails` method returns server-side details about a given set of items, 
 
 ```js
 details = await itemService.getDetails(['shiny_sword', 'gem']);
-for (item in details) {
+for (item of details) {
   const priceStr = new Intl.NumberFormat(
       locale,
       {style: 'currency', currency: item.price.currency}
@@ -88,6 +89,22 @@ Items that are designed to be purchased once and last permanently in the user’
 itemService.acknowledge(purchaseToken, 'onetime');
 ```
 
+### Checking existing purchases
+
+The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (e.g. whether a subscription, promotional code, or permanent upgrade is active) or to recover from network interruptions during a purchase (e.g. item is purchased but not yet acknowledged).
+
+
+```js
+purchases = await itemService.listPurchases();
+for (p of purchases) {
+  if (!p.acknowledged) {
+    await itemService.acknowledge(p.token, OnetimeOrRepeatable(p.itemId));
+    RecordSuccessfulPurchase(p);
+  }
+  DoSomethingWithEntitlement(p.itemId);
+}
+```
+
 ## Full API interface
 
 
@@ -105,6 +122,8 @@ interface DigitalGoodsService {
 
   Promise<void> acknowledge(DOMString purchaseToken,
                             PurchaseType purchaseType);
+  
+  Promise<sequence<PurchaseDetails>> listPurchases();
 };
 
 enum PurchaseType {
@@ -117,6 +136,22 @@ dictionary ItemDetails {
   DOMString title;
   DOMString description;
   PaymentCurrencyAmount price;
+};
+
+dictionary PurchaseDetails {
+  DOMString itemId;
+  DOMString purchaseToken;
+  boolean acknowledged;
+  PurchaseState purchaseState;
+  // Timestamp in ms since 1970-01-01 00:00 UTC.
+  DOMTimeStamp purchaseTime;
+  boolean willAutoRenew;
+};
+
+enum PurchaseState {
+  "unknown",
+  "purchased",
+  "pending",
 };
 ```
 
