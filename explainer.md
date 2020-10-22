@@ -97,10 +97,11 @@ The `listPurchases` method allows a client to get a list of items that are curre
 ```js
 purchases = await itemService.listPurchases();
 for (p of purchases) {
-  if (p.acknowledged)
-    DoSomethingWithEntitlement(p.itemId);
-  else
-    AcknowledgeAndDoSomething(p.itemId, p.token);
+  if (!p.acknowledged) {
+    await itemService.acknowledge(p.token, OnetimeOrRepeatable(p.itemId));
+    RecordSuccessfulPurchase(p);
+  }
+  DoSomethingWithEntitlement(p.itemId);
 }
 ```
 
@@ -142,9 +143,9 @@ dictionary PurchaseDetails {
   DOMString purchaseToken;
   boolean acknowledged;
   PurchaseState purchaseState;
-  // Timestamp in ms since Unix epoch.
+  // Timestamp in ms since 1970-01-01 00:00 UTC.
   DOMTimeStamp purchaseTime;
-  boolean willRenew;
+  boolean willAutoRenew;
 };
 
 enum PurchaseState {
