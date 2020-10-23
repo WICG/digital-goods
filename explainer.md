@@ -132,17 +132,14 @@ enum PurchaseType {
 };
 
 dictionary ItemDetails {
-  DOMString itemId;
-  DOMString title;
+  required DOMString itemId;
+  required DOMString title;
+  required PaymentCurrencyAmount price;
   DOMString description;
-  PaymentCurrencyAmount price;
-  // Optional. Time duration in ms.
+  // Timestamps are durations in ms.
   DOMTimeStamp SubscriptionPeriod;
-  // Optional. Time duration in ms.
   DOMTimeStamp FreeTrialPeriod;
-  // Optional.
   PaymentCurrencyAmount IntroductoryPrice;
-  // Optional. Time duration in ms.
   DOMTimeStamp IntroductoryPricePeriod;
 };
 
