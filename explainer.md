@@ -136,11 +136,14 @@ dictionary ItemDetails {
   DOMString title;
   DOMString description;
   PaymentCurrencyAmount price;
-  // Timestamps are time durations in ms.
-  DOMTimeStamp? SubscriptionPeriod;
-  DomTimeStamp? FreeTrialPeriod;
-  PaymentCurrencyAmount? IntroductoryPrice;
-  DomTimeStamp? IntroductoryPricePeriod;
+  // Optional. Time duration in ms.
+  DOMTimeStamp SubscriptionPeriod;
+  // Optional. Time duration in ms.
+  DOMTimeStamp FreeTrialPeriod;
+  // Optional.
+  PaymentCurrencyAmount IntroductoryPrice;
+  // Optional. Time duration in ms.
+  DOMTimeStamp IntroductoryPricePeriod;
 };
 
 dictionary PurchaseDetails {
