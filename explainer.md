@@ -132,10 +132,16 @@ enum PurchaseType {
 };
 
 dictionary ItemDetails {
-  DOMString itemId;
-  DOMString title;
+  required DOMString itemId;
+  required DOMString title;
+  required PaymentCurrencyAmount price;
   DOMString description;
-  PaymentCurrencyAmount price;
+  // Periods are specified as ISO 8601 durations.
+  // https://en.wikipedia.org/wiki/ISO_8601#Durations
+  DOMString subscriptionPeriod;
+  DOMString freeTrialPeriod;
+  PaymentCurrencyAmount introductoryPrice;
+  DOMString introductoryPricePeriod;
 };
 
 dictionary PurchaseDetails {
