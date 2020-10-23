@@ -139,13 +139,13 @@ dictionary ItemDetails {
 };
 
 dictionary PurchaseDetails {
-  DOMString itemId;
-  DOMString purchaseToken;
-  boolean acknowledged;
-  PurchaseState purchaseState;
+  required DOMString itemId;
+  required DOMString purchaseToken;
+  boolean acknowledged = "false";
+  PurchaseState purchaseState = "unknown";
   // Timestamp in ms since 1970-01-01 00:00 UTC.
   DOMTimeStamp purchaseTime;
-  boolean willAutoRenew;
+  boolean willAutoRenew = "false";
 };
 
 enum PurchaseState {
