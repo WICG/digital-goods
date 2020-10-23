@@ -136,11 +136,12 @@ dictionary ItemDetails {
   required DOMString title;
   required PaymentCurrencyAmount price;
   DOMString description;
-  // Timestamps are durations in ms.
-  DOMTimeStamp SubscriptionPeriod;
-  DOMTimeStamp FreeTrialPeriod;
-  PaymentCurrencyAmount IntroductoryPrice;
-  DOMTimeStamp IntroductoryPricePeriod;
+  // Periods are specified as ISO 8601 durations.
+  // https://en.wikipedia.org/wiki/ISO_8601#Durations
+  DOMString subscriptionPeriod;
+  DOMString freeTrialPeriod;
+  PaymentCurrencyAmount introductoryPrice;
+  DOMString introductoryPricePeriod;
 };
 
 dictionary PurchaseDetails {
