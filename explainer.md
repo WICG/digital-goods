@@ -74,7 +74,7 @@ Note that as part of this proposal, we are proposing to [remove the requirement]
 
 ### Acknowledging a purchase
 
-Some stores will require that the user acknowledge a purchase once it has succeeded. In this case, the payment response will return a `PurchaseToken`, which can be used with the `acknowledge` method.
+Some stores will require that the user acknowledge a purchase once it has succeeded. In this case, the payment response will return a "purchase token" string, which can be used with the `acknowledge` method.
 
 Items that are designed to be purchased multiple times must be acknowledged with the `repeatable` flag. An example of a repeatable purchase is an in-game powerup that makes the player stronger for a short period of time. Once it is acknowledged with the `repeatable` flag, it can be purchased again.
 
