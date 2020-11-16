@@ -60,7 +60,7 @@ None.
 
 ## 2.13 How does this specification distinguish between behavior in first-party and third-party contexts?
 
-The API should not function in third-party contexts. Furthermore, the API should require the "payment" permission policy, as [defined in the Payment Request API](https://w3c.github.io/payment-request/#permissions-policy) - if disabled, the user agent should act as if there are no available payment methods.
+The API should require the "payment" permission policy, as [defined in the Payment Request API](https://w3c.github.io/payment-request/#permissions-policy) - if disabled, the user agent should act as if there are no available payment methods. For this permission policy to be enabled in third-party contexts, the top-level context must explicitly enable it on the sub-frame. This would let top-level code delegate payment handling to some third-party if desired.
 
 ## 2.14 How does this specification work in the context of a user agent’s Private Browsing or "incognito" mode?
 
