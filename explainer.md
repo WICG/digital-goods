@@ -98,7 +98,7 @@ The `listPurchases` method allows a client to get a list of items that are curre
 purchases = await itemService.listPurchases();
 for (p of purchases) {
   if (!p.acknowledged) {
-    await itemService.acknowledge(p.token, OnetimeOrRepeatable(p.itemId));
+    await itemService.acknowledge(p.purchaseToken, OnetimeOrRepeatable(p.itemId));
     RecordSuccessfulPurchase(p);
   }
   DoSomethingWithEntitlement(p.itemId);
