@@ -193,12 +193,13 @@ This API assumes that the user agent has some existing authentication process fo
 *    Configure each item in the server UI to be either “consumable” or “one-time purchase”. Call “consume” to consume a consumable item. No acknowledgement required for one-time purchase items.
 
 ## Open questions
+*   Add here.
 
+## Resolved issues
 *   Do we need to support [pending transactions](https://developer.android.com/google/play/billing/billing_library_overview#pending)? (i.e., when your app starts, you’re expected to query pending transactions which were made out-of-app, and acknowledge them).
     *   In the Play Billing backend, this means you’re supposed to call [BillingClient.queryPurchases](https://developer.android.com/reference/com/android/billingclient/api/BillingClient#querypurchases) to get the list of pending unacknowledged transactions.
     *   See [this post](https://android-developers.googleblog.com/2019/06/advanced-in-app-billing-handling.html) for details.
-
-## Resolved issues
+    *   Added listPurchases.
 *   Can we combine acknowledge() and consume()? Only reason we can see to _not_ do that is that the Play Billing implementation would not know which method to call, unless we can get it from the SkuDetails, which I don’t see a field for.
     *   It [looks like](https://developer.android.com/google/play/billing/billing_onetime) the Play Store doesn’t distinguish the two on the server. The only way to distinguish this is whether you call acknowledge() or consume().
     *   Could look at this as a Boolean option on a single method, “make\_available\_again”.
