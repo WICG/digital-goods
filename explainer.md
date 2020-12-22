@@ -4,21 +4,27 @@ Authors: Matt Giuca \<<mgiuca@chromium.org>\>,
          Glen Robertson \<<glenrob@chromium.org>\>,
          Jay Harris \<<harrisjay@chromium.org>\>
 
-This document proposes the Digital Goods API for querying and managing digital products to facilitate in-app purchases from web applications, in conjunction with the [Payment Request API](https://www.w3.org/TR/payment-request/) (which is used to make the actual purchases). The API would be linked to a digital distribution service connected to via the user agent.
+This document proposes the Digital Goods API for querying and managing digital products to facilitate in-app purchases from web applications. It is **complementary to the [Payment Request API](https://www.w3.org/TR/payment-request/)**, which is used to make purchases of the digital products. This API would be linked to a digital store connected to via the user agent.
 
 
 ## The problem
 
-The problem this API solves is that Payment Request by itself is inadequate for making in-app purchases in existing digital stores, because that API simply asks the user to make a payment of a certain amount (e.g., “Please authorize a transaction of US$3.00”), which is sufficient for websites selling their own products, but established digital distribution services require apps to make purchases by item IDs, not monetary amounts (e.g., “Please authorize the purchase of SHINY\_SWORD”); the price being configured per-region on the backend.
+The problem this API solves is that *Payment Request by itself is inadequate for making in-app purchases in existing digital stores*, because that API simply asks the user to make a payment of a certain amount (e.g., “Please authorize a transaction of US$3.00”), which is sufficient for websites selling their own products, but established digital distribution services require apps to make purchases by item IDs, not monetary amounts (e.g., “Please authorize the purchase of SHINY\_SWORD”); the price being configured per-region on the backend.
 
-The Payment Request API can be used, with [a minor modification](https://github.com/w3c/payment-request/issues/912), to make in-app purchases, using the digital distribution service as a payment method, by supplying the desired item IDs as `data` in the `modifiers` member for that particular payment method. However, there are ancillary operations relating to in-app purchases that are not part of that API:
+The Payment Request API can be used, with [a minor modification](https://github.com/w3c/payment-request/issues/912), to make in-app purchases using the digital distribution service as a payment method, by supplying the desired item IDs as `data` in the `modifiers` member for that particular payment method. However, there are ancillary operations relating to in-app purchases that are not part of that API:
 
 *   Querying the details (e.g., name, description, regional price) of digital items from the store backend.
     *   Note: Even though the web app developer is ultimately responsible for configuring these items on the server, and could therefore keep track of these without an API, it is important to have a single source of truth, to ensure that the price of items displayed in the app exactly matches the prices that the user will eventually be charged, especially as prices can differ by region, or change at planned times (such as when sale events begin or end).
 *   Consuming or acknowledging purchases. Digital stores typically do not consider a purchase finalized until the client acknowledges the purchase through a separate API call. This acknowledgment is supposed to be performed once the client “activates” the purchase inside the app.
 *   Checking the digital items currently owned by the user.
 
-It is typically a requirement for listing an application in a digital store that in-app purchases are made through that store’s billing API. Therefore, access to these operations is a requirement for web apps to be listed in various application stores, if they wish to sell in-app products.
+It is typically a requirement for listing an application in a digital store that purchases are made through that store’s billing API. Therefore, access to these operations is a requirement for web sites to be listed in various digital stores, if they wish to sell digital products.
+
+### Example Use Cases
+
+*   Listing the available subscription options for your site's service, in the user's currency, as configured with a store backend.
+*   Check that a user has a purchased resource in your web game, and use it up when appropriate, using the store backend's infrastructure.
+*   Checking with a store backend that a user is eligible to access premium content on your site, having purchased it or used a promotional code in the past.
 
 ## The proposed API
 
@@ -43,7 +49,7 @@ The `getDetails` method returns server-side details about a given set of items, 
 
 
 ```js
-details = await itemService.getDetails(['shiny_sword', 'gem']);
+details = await itemService.getDetails(['shiny_sword', 'gem', 'monthly_subscription']);
 for (item of details) {
   const priceStr = new Intl.NumberFormat(
       locale,
@@ -65,6 +71,8 @@ The item’s `price` is a <code>[PaymentCurrencyAmount](https://developer.mozill
 The purchase flow itself uses the [Payment Request API](https://w3c.github.io/payment-request/). We don’t show the full payment request code here, but note that the item ID for any items the user chooses to purchase should be sent in the `data` field of a `modifiers` entry for the given payment method, in a manner specific to the store. For example:
 
 ```js
+const details = await itemService.getDetails(['monthly_subscription']);
+const item = details[0];
 new PaymentRequest(
   [{supportedMethods: 'https://example.com/billing',
     data: {itemId: item.itemId}}]);
