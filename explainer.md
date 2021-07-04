@@ -201,7 +201,7 @@ This API assumes that the user agent has some existing authentication process fo
 *    Configure each item in the server UI to be either “consumable” or “one-time purchase”. Call “consume” to consume a consumable item. No acknowledgement required for one-time purchase items.
 
 ## Open questions
-*   Add here.
+*   How do we handle purchases on devices that do not support the Digital Goods API, e.g. devices that do not use Chrome as default browser or a Chrome version that does not support the Digital Goods API? Is it PlayStore T&C conform to implement the Digtial Goods API and use it if the device supports it and otherwise fallback to an alternative payment provider, e.g. Stripe? If not, are there any solutions for this scenario?
 
 ## Resolved issues
 *   Do we need to support [pending transactions](https://developer.android.com/google/play/billing/billing_library_overview#pending)? (i.e., when your app starts, you’re expected to query pending transactions which were made out-of-app, and acknowledge them).
