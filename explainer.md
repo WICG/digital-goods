@@ -201,7 +201,7 @@ This API assumes that the user agent has some existing authentication process fo
 *    Configure each item in the server UI to be either “consumable” or “one-time purchase”. Call “consume” to consume a consumable item. No acknowledgement required for one-time purchase items.
 
 ## Open questions
-*   Add here.
+*   Please check our [issue tracker](https://github.com/WICG/digital-goods/issues).
 
 ## Resolved issues
 *   Do we need to support [pending transactions](https://developer.android.com/google/play/billing/billing_library_overview#pending)? (i.e., when your app starts, you’re expected to query pending transactions which were made out-of-app, and acknowledge them).
