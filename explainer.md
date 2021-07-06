@@ -32,12 +32,16 @@ The Digital Goods API allows the user agent to provide the above operations, alo
 
 Sites using the proposed API would still need to be configured to work with each individual store they are listed in, but having a standard API means they can potentially have that integration work across multiple browsers. This is similar to how the existing Payment Request API works (sites still need to integrate with each payment provider, e.g., Google Pay, Apple Pay, but their implementation is browser agnostic).
 
-Usage of the API would begin with a call to `Window.getDigitalGoodsService()`, which returns a promise yielding null if there is no DigitalGoodsService:
+Usage of the API would begin with a call to `window.getDigitalGoodsService()`, which returns a promise yielding null if there is no DigitalGoodsService:
 
 ```js
-const itemService = await getDigitalGoodsService("https://example.com/billing");
-if (itemService === null) {
-    // Our preferred item service is not available.
+if (window.getDigitalGoodsService === undefined) {
+  // Digital Goods API is not supported on this browser or OS.
+  return;
+}
+const digitalGoodsService = await window.getDigitalGoodsService("https://example.com/billing");
+if (digitalGoodsService === null) {
+    // Our preferred billing method is not available.
     // Use a normal web-based payment flow.
     return;
 }
@@ -49,7 +53,7 @@ The `getDetails` method returns server-side details about a given set of items, 
 
 
 ```js
-details = await itemService.getDetails(['shiny_sword', 'gem', 'monthly_subscription']);
+details = await digitalGoodsService.getDetails(['shiny_sword', 'gem', 'monthly_subscription']);
 for (item of details) {
   const priceStr = new Intl.NumberFormat(
       locale,
@@ -71,7 +75,7 @@ The item’s `price` is a <code>[PaymentCurrencyAmount](https://developer.mozill
 The purchase flow itself uses the [Payment Request API](https://w3c.github.io/payment-request/). We don’t show the full payment request code here, but note that the item ID for any items the user chooses to purchase should be sent in the `data` field of a `modifiers` entry for the given payment method, in a manner specific to the store. For example:
 
 ```js
-const details = await itemService.getDetails(['monthly_subscription']);
+const details = await digitalGoodsService.getDetails(['monthly_subscription']);
 const item = details[0];
 new PaymentRequest(
   [{supportedMethods: 'https://example.com/billing',
@@ -87,14 +91,14 @@ Some stores will require that the user acknowledge a purchase once it has succee
 Items that are designed to be purchased multiple times must be acknowledged with the `repeatable` flag. An example of a repeatable purchase is an in-game powerup that makes the player stronger for a short period of time. Once it is acknowledged with the `repeatable` flag, it can be purchased again.
 
 ```js
-itemService.acknowledge(purchaseToken, 'repeatable');
+digitalGoodsService.acknowledge(purchaseToken, 'repeatable');
 ```
 
 Items that are designed to be purchased once and last permanently in the user’s app must be acknowledged with the `onetime` flag. An example of a one-time purchase is a “remove ads” option. Once acknowledged with the `onetime` flag, the app is expected to remember the user’s purchase and continue providing the purchased capability.
 
 
 ```js
-itemService.acknowledge(purchaseToken, 'onetime');
+digitalGoodsService.acknowledge(purchaseToken, 'onetime');
 ```
 
 ### Checking existing purchases
@@ -103,10 +107,10 @@ The `listPurchases` method allows a client to get a list of items that are curre
 
 
 ```js
-purchases = await itemService.listPurchases();
+purchases = await digitalGoodsService.listPurchases();
 for (p of purchases) {
   if (!p.acknowledged) {
-    await itemService.acknowledge(p.purchaseToken, OnetimeOrRepeatable(p.itemId));
+    await digitalGoodsService.acknowledge(p.purchaseToken, OnetimeOrRepeatable(p.itemId));
     RecordSuccessfulPurchase(p);
   }
   DoSomethingWithEntitlement(p.itemId);
