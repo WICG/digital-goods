@@ -41,7 +41,7 @@ if (window.getDigitalGoodsService === undefined) {
 }
 const digitalGoodsService = await window.getDigitalGoodsService("https://example.com/billing");
 if (digitalGoodsService === null) {
-    // Our preferred item service is not available.
+    // Our preferred billing method is not available.
     // Use a normal web-based payment flow.
     return;
 }
