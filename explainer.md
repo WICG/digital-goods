@@ -1,8 +1,21 @@
 # Digital Goods API - Explainer
 
 Authors: Matt Giuca \<<mgiuca@chromium.org>\>,
-         Glen Robertson \<<glenrob@chromium.org>\>,
-         Jay Harris \<<harrisjay@chromium.org>\>
+         Glen Robertson \<<glenrob@chromium.org>\>
+
+* [The problem](#the-problem)
+* [The proposed API](#the-proposed-api)
+  + [Getting a service instance](#getting-a-service-instance)
+  + [Querying item details](#querying-item-details)
+  + [Making a purchase](#making-a-purchase)
+  + [Acknowledging a purchase](#acknowledging-a-purchase)
+  + [Consuming a purchase](#consuming-a-purchase)
+  + [Checking existing purchases](#checking-existing-purchases)
+* [Full API interface](#full-api-interface)
+  + [API v2.0](#api-v20)
+  + [API v1.0 (deprecated)](#api-v10-deprecated)
+* [Formatting the price](#formatting-the-price)
+* [Security and Privacy Considerations](#security-and-privacy-considerations)
 
 This document proposes the Digital Goods API for querying and managing digital products to facilitate in-app purchases from web applications. It is **complementary to the [Payment Request API](https://www.w3.org/TR/payment-request/)**, which is used to make purchases of the digital products. This API would be linked to a digital store connected to via the user agent.
 
@@ -14,7 +27,7 @@ The problem this API solves is that *Payment Request by itself is inadequate for
 The Payment Request API can be used, with [a minor modification](https://github.com/w3c/payment-request/issues/912), to make in-app purchases using the digital distribution service as a payment method, by supplying the desired item IDs as `data` in the `modifiers` member for that particular payment method. However, there are ancillary operations relating to in-app purchases that are not part of that API:
 
 *   Querying the details (e.g., name, description, regional price) of digital items from the store backend.
-    *   Note: Even though the web app developer is ultimately responsible for configuring these items on the server, and could therefore keep track of these without an API, it is important to have a single source of truth, to ensure that the price of items displayed in the app exactly matches the prices that the user will eventually be charged, especially as prices can differ by region, or change at planned times (such as when sale events begin or end).
+    *   Note: Even though the web app developer is ultimately responsible for configuring these items on the server, and could therefore keep track of these without an API, it is important to have a single source of truth. This ensures that the price of items displayed in the app exactly matches the prices that the user will eventually be charged, especially as prices can differ by region, or change at planned times (such as when sale events begin or end).
 *   Consuming or acknowledging purchases. Digital stores typically do not consider a purchase finalized until the client acknowledges the purchase through a separate API call. This acknowledgment is supposed to be performed once the client “activates” the purchase inside the app.
 *   Checking the digital items currently owned by the user.
 
@@ -32,18 +45,35 @@ The Digital Goods API allows the user agent to provide the above operations, alo
 
 Sites using the proposed API would still need to be configured to work with each individual store they are listed in, but having a standard API means they can potentially have that integration work across multiple browsers. This is similar to how the existing Payment Request API works (sites still need to integrate with each payment provider, e.g., Google Pay, Apple Pay, but their implementation is browser agnostic).
 
-Usage of the API would begin with a call to `window.getDigitalGoodsService()`, which returns a promise yielding null if there is no DigitalGoodsService:
+### Getting a service instance
+
+Usage of the API would begin with a call to `window.getDigitalGoodsService()`, which might only be available in certain contexts (eg. HTTPS, browser, OS). If available, the method can be called with a service provider URL.The method returns a promise that is rejected if the given service provider is not available:
 
 ```js
 if (window.getDigitalGoodsService === undefined) {
-  // Digital Goods API is not supported on this browser or OS.
+  // Digital Goods API is not supported in this context.
   return;
 }
-const digitalGoodsService = await window.getDigitalGoodsService("https://example.com/billing");
+try {
+  const digitalGoodsService = await window.getDigitalGoodsService("https://example.com/billing");
+  // Use the service here.
+  ...
+} catch (error) {
+  // Our preferred service provider is not available.
+  // Use a normal web-based payment flow.
+  return;
+}
+```
+
+#### Note
+
+For backwards compatibility with Digital Goods API v1.0 while both are available, developers should also check whether the returned `digitalGoodsService` object is `null`:
+
+```js
 if (digitalGoodsService === null) {
-    // Our preferred billing method is not available.
-    // Use a normal web-based payment flow.
-    return;
+  // Our preferred service provider is not available.
+  // Use a normal web-based payment flow.
+  return;
 }
 ```
 
@@ -86,38 +116,72 @@ Note that as part of this proposal, we are proposing to [remove the requirement]
 
 ### Acknowledging a purchase
 
-Some stores will require that the user acknowledge a purchase once it has succeeded. In this case, the payment response will return a "purchase token" string, which can be used with the `acknowledge` method.
+Some stores will require that the developer acknowledge a purchase once it has succeeded. In this case, the payment response will return a "purchase token" string, which should be verified and acknowledged by the developer. This should be done using direct API calls from the developer's server to the service provider before granting entitlements. Such a direct developer-to-provider API is not specified as part of the Digital Goods API.
 
-Items that are designed to be purchased multiple times must be acknowledged with the `repeatable` flag. An example of a repeatable purchase is an in-game powerup that makes the player stronger for a short period of time. Once it is acknowledged with the `repeatable` flag, it can be purchased again.
+### Consuming a purchase
 
-```js
-digitalGoodsService.acknowledge(purchaseToken, 'repeatable');
-```
-
-Items that are designed to be purchased once and last permanently in the user’s app must be acknowledged with the `onetime` flag. An example of a one-time purchase is a “remove ads” option. Once acknowledged with the `onetime` flag, the app is expected to remember the user’s purchase and continue providing the purchased capability.
-
+Items that are designed to be purchased multiple times usually need to be marked as "consumed" before they can be purchased again by the user. An example of a consumable purchase is an in-game powerup that makes the player stronger for a short period of time. This can be done with the `consume` method:
 
 ```js
-digitalGoodsService.acknowledge(purchaseToken, 'onetime');
+digitalGoodsService.consume(purchaseToken);
 ```
+
+It is preferable to use a direct developer-to-provider API to consume purchases, if one is available, in order to more verifiably ensure that a purchase was used up.
 
 ### Checking existing purchases
 
-The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (e.g. whether a subscription, promotional code, or permanent upgrade is active) or to recover from network interruptions during a purchase (e.g. item is purchased but not yet acknowledged).
-
+The `listPurchases` method allows a client to get a list of items that are currently owned or purchased by the user. This may be necessary to check for entitlements (e.g. whether a subscription, promotional code, or permanent upgrade is active) or to recover from network interruptions during a purchase (e.g. item is purchased but not yet acknowledged). The method returns item IDs and purchase tokens, which should be verified using a direct developer-to-provider API before granting entitlements.
 
 ```js
 purchases = await digitalGoodsService.listPurchases();
 for (p of purchases) {
-  if (!p.acknowledged) {
-    await digitalGoodsService.acknowledge(p.purchaseToken, OnetimeOrRepeatable(p.itemId));
-    RecordSuccessfulPurchase(p);
-  }
-  DoSomethingWithEntitlement(p.itemId);
+  VerifyAndGrantEntitlement(p.itemId, p.purchaseToken);
 }
 ```
 
 ## Full API interface
+
+### API v2.0
+Available in Chrome M96 onwards.
+
+```webidl
+[SecureContext]
+partial interface Window {
+  // Rejects the promise if there is no Digital Goods Service associated with
+  // the given service provider.
+  Promise<DigitalGoodsService> getDigitalGoodsService(DOMString serviceProvider);
+};
+
+[SecureContext]
+interface DigitalGoodsService {
+  Promise<sequence<ItemDetails>> getDetails(sequence<DOMString> itemIds);
+  
+  Promise<sequence<PurchaseDetails>> listPurchases();
+
++  Promise<void> consume(DOMString purchaseToken);
+};
+
+dictionary ItemDetails {
+  required DOMString itemId;
+  required DOMString title;
+  required PaymentCurrencyAmount price;
+  DOMString description;
+  // Periods are specified as ISO 8601 durations.
+  // https://en.wikipedia.org/wiki/ISO_8601#Durations
+  DOMString subscriptionPeriod;
+  DOMString freeTrialPeriod;
+  PaymentCurrencyAmount introductoryPrice;
+  DOMString introductoryPricePeriod;
+};
+
+dictionary PurchaseDetails {
+  required DOMString itemId;
+  required DOMString purchaseToken;
+};
+```
+
+### API v1.0 (deprecated)
+Ran in Chrome Origin Trial from M89 to M95 (inclusive).
 
 
 ```webidl
