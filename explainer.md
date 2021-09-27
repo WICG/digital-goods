@@ -116,11 +116,11 @@ Note that as part of this proposal, we are proposing to [remove the requirement]
 
 ### Acknowledging a purchase
 
-Some stores will require that the developer acknowledge a purchase once it has succeeded. In this case, the payment response will return a "purchase token" string, which should be verified and acknowledged by the developer. This should be done using direct API calls from the developer's server to the service provider before granting entitlements. Such a direct developer-to-provider API is not specified as part of the Digital Goods API.
+The payment response will return a "purchase token" string, which can be used for direct communication between the developer's server and the service provider beyond the Digital Goods API. Such communication can allow the developer to independently verify information about the purchase before granting entitlements. Some stores might require that the developer acknowledge a purchase once it has succeeded, to confirm that it has been recorded.
 
 ### Consuming a purchase
 
-Items that are designed to be purchased multiple times usually need to be marked as "consumed" before they can be purchased again by the user. An example of a consumable purchase is an in-game powerup that makes the player stronger for a short period of time. This can be done with the `consume` method:
+Purchases that are designed to be purchased multiple times usually need to be marked as "consumed" before they can be purchased again by the user. An example of a consumable purchase is an in-game powerup that makes the player stronger for a short period of time. This can be done with the `consume` method:
 
 ```js
 digitalGoodsService.consume(purchaseToken);
@@ -142,7 +142,7 @@ for (p of purchases) {
 ## Full API interface
 
 ### API v2.0
-Available in Chrome M96 onwards.
+Origin trial expected to begin in Chrome M96.
 
 ```webidl
 [SecureContext]
@@ -158,7 +158,7 @@ interface DigitalGoodsService {
   
   Promise<sequence<PurchaseDetails>> listPurchases();
 
-+  Promise<void> consume(DOMString purchaseToken);
+  Promise<void> consume(DOMString purchaseToken);
 };
 
 dictionary ItemDetails {
@@ -181,7 +181,7 @@ dictionary PurchaseDetails {
 ```
 
 ### API v1.0 (deprecated)
-Ran in Chrome Origin Trial from M89 to M95 (inclusive).
+Origin trial ran in Chrome from [M89 to M95 (inclusive)](https://chromestatus.com/feature/5339955595313152).
 
 
 ```webidl
