@@ -254,9 +254,9 @@ This will correctly format the price in the given locale (which should be set to
 
 ## Security and Privacy Considerations
 
-This API should be used in a secure context.
+This API should be used in a secure context. Additionally a user agent could restrict use of the API using [feature policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy) and/or restrict it to top-level contexts only. The digital products managed by the API are expected to be specific to one origin, so information retrieved through the API would relate to the current origin only.
 
-This API assumes that the user agent has some existing authentication process for the user, e.g. some extra UI when the API is initialised, or some implicit platform or browsing context. Because an authenticated user is likely needed for the API to be meaningful, and information is only exposed for purchases that user has already made through a separate API, there is minimal additional potentially-identifying information to be gained through this API.
+This API assumes that the user agent has some existing authentication process for the user, e.g. some extra UI when the API is initialised, or some implicit platform or browsing context. Because an authenticated user is likely needed for the API to be meaningful, and information is only exposed for purchases that user has already made from this origin, there is minimal additional potentially-identifying information to be gained through this API.
 
 ## Analysis of various APIs
 
