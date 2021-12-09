@@ -118,7 +118,7 @@ Note that as part of this proposal, we are proposing to [remove the requirement]
 
 The payment response will return a "purchase token" string, which can be used for direct communication between the developer's server and the service provider beyond the Digital Goods API. Such communication can allow the developer to independently verify information about the purchase before granting entitlements. Some stores might require that the developer acknowledge a purchase once it has succeeded, to confirm that it has been recorded.
 
-### Consuming a purchase
+### Consuming a purchase 
 
 Purchases that are designed to be purchased multiple times usually need to be marked as "consumed" before they can be purchased again by the user. An example of a consumable purchase is an in-game powerup that makes the player stronger for a short period of time. This can be done with the `consume` method:
 
