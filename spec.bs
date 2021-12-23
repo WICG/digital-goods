@@ -172,8 +172,6 @@ Note: This section is non-normative.
     [SecureContext] Promise<DigitalGoodsService> getDigitalGoodsService(
         DOMString serviceProvider);
   };
-
-  //</DigitalGoodsService> to appease my editor (TODO REMOVE THIS LINE!)
 </xmp>
 
 The {{Window}} object MAY expose a {{Window/getDigitalGoodsService()}} method.
@@ -234,8 +232,6 @@ usually a [=url-based payment method identifier=].
     Promise<sequence<PurchaseDetails>> listPurchases();
 
     Promise<undefined> consume(DOMString purchaseToken);
-
-    // </undefined></DOMString> to appease my editor (TODO REMOVE THIS LINE)
   };
 
   dictionary ItemDetails {
