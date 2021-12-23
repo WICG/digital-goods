@@ -1,0 +1,17 @@
+<pre class='metadata'>
+Title: Digital Goods API
+Shortname: digital-goods
+Level: 1
+Status: CG-DRAFT
+Group: WICG
+Repository: WICG/digital-goods
+URL: https://wicg.github.io/digital-goods/
+Editor: Glen Robertson, Google https://www.google.com/, glenrob@chromium.org
+!Tests: <a href=https://github.com/w3c/web-platform-tests/tree/master/digital-goods>web-platform-tests digital-goods/</a> (<a href=https://github.com/w3c/web-platform-tests/labels/digital-goods>ongoing work</a>)
+Abstract: The Digital Goods API allows web applications to get information about their digital products and their user's purchases managed by a digital store. The user agent abstracts connections to the store and the <a href="https://www.w3.org/TR/payment-request/">Payment Request API</a> is used to make purchases.
+</pre>
+
+Introduction {#intro}
+=====================
+
+See https://github.com/tabatkins/bikeshed to get started.
