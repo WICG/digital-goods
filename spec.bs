@@ -72,16 +72,17 @@ Note: This section is non-normative.
   that they can see the available purchase options and prices without having to
   go through a purchase flow.
 
-  The returned {{ItemDetails}} sequence can be in any order and might not include an
-  item if it doesn't exist on the server (i.e. there is not a 1:1 correspondence
-  between the input list and output).
+  The returned {{ItemDetails}} sequence can be in any order and might not
+  include an item if it doesn't exist on the server (i.e. there is not a 1:1
+  correspondence between the input list and output).
 
-  The item ID is a string representing the primary key of the items, configured in
-  the store server. There is no function to get a list of item IDs; those have to
-  be hard-coded in the client code or fetched from the developer’s own server.
+  The item ID is a string representing the primary key of the items, configured
+  in the store server. There is no function to get a list of item IDs; those
+  have to be hard-coded in the client code or fetched from the developer’s own
+  server.
 
-  The item’s price is a {{PaymentCurrencyAmount}} containing the current price of
-  the item in the user’s current region and currency. It is designed to be
+  The item’s price is a {{PaymentCurrencyAmount}} containing the current price
+  of the item in the user’s current region and currency. It is designed to be
   formatted for the user’s current locale using
   [[ECMA-402#sec-intl.numberformat|Intl.NumberFormat]], as shown above.
 
@@ -104,7 +105,7 @@ Note: This section is non-normative.
   don’t show the
   full payment request code here, but note that the item ID for any items the
   user chooses to purchase can be sent in the <code>data</code> field of a
-  <code>modifiers</code> entry
+  <code>methodData</code> entry
   for the given payment method, in a manner specific to the store.
 </div>
 
@@ -141,9 +142,9 @@ Note: This section is non-normative.
   stronger for a short period of time. This can be done with the
   {{DigitalGoodsService/consume()}} method.
 
-  It is preferable to use a direct developer-to-provider API to consume purchases,
-  if one is available, in order to more verifiably ensure that a purchase was used
-  up.
+  It is preferable to use a direct developer-to-provider API to consume
+  purchases, if one is available, in order to more verifiably ensure that a
+  purchase was used up.
 </div>
 
 ## Use with subdomain iframes ## {#use-with-subdomain-iframes}
@@ -156,11 +157,12 @@ Note: This section is non-normative.
     </iframe>
   </xmp>
 
-  To indicate that a subdomain iframe is allowed to invoke the Digital Goods API,
-  the <code>allow</code> attribute along with the <code>"payment"</code> keyword
-  can be specified on the
-  iframe element. Cross-origin iframes cannot invoke the Digital Goods API. The
-  [[Permissions Policy]] specification provides further details and examples.
+  To indicate that a subdomain iframe is allowed to invoke the Digital Goods
+  API, the <code>allow</code> attribute along with the <code>"payment"</code>
+  keyword can be specified on the iframe element. Cross-origin iframes cannot
+  invoke the Digital Goods API. The
+  [[permissions-policy|Permissions Policy]] specification provides further
+  details and examples.
 </div>
 
 # API definition # {#api-definition}
@@ -179,20 +181,19 @@ User agents that do not support Digital Goods SHOULD NOT expose
 {{Window/getDigitalGoodsService()}} on the {{Window}} interface.
 
 Note: The above statement is designed to permit feature detection. If
-{{Window/getDigitalGoodsService()}} is present, there is a reasonable expectation
-that it will work with at least one service provider.
+{{Window/getDigitalGoodsService()}} is present, there is a reasonable
+expectation that it will work with at least one service provider.
 
 ### getDigitalGoodsService() method ### {#getdigitalgoodsservice-method}
 
 Note: The {{Window/getDigitalGoodsService()}} method is called to determine
 whether the given
 {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}} is supported
-in the current
-context. The method returns a Promise that will be resolved with a
-{{DigitalGoodsService}} object if the serviceProvider is supported, or rejected
-with an exception if the serviceProvider is unsupported or any error occurs.
-The {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}} is
-usually a [=url-based payment method identifier=].
+in the current context. The method returns a Promise that will be resolved with
+a {{DigitalGoodsService}} object if the serviceProvider is supported, or
+rejected with an exception if the serviceProvider is unsupported or any error
+occurs. The {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}}
+is usually a [=url-based payment method identifier=].
 
 <div algorithm>
   When the
@@ -301,7 +302,7 @@ usually a [=url-based payment method identifier=].
 ### consume() method ### {#consume-method}
 
 Note: Consume in this context means to use up a purchase. The user is expected
-  to no longer be entitled to the purchase after it is consumed.
+to no longer be entitled to the purchase after it is consumed.
 
 <div algorithm>
   When the <dfn method for="DigitalGoodsService">consume(|purchaseToken|)</dfn>
@@ -371,9 +372,9 @@ Note: Consume in this context means to use up a purchase. The user is expected
   from a {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}} to
   which the user is currently entitled.
 
-  * {{PurchaseDetails/itemId}} identifies a particular digital item in the current
-    app's inventory. It is expected to be unique within the app but might not be
-    unique across all apps. It is expected to be equivalent to an
+  * {{PurchaseDetails/itemId}} identifies a particular digital item in the
+    current app's inventory. It is expected to be unique within the app but
+    might not be unique across all apps. It is expected to be equivalent to an
     {{ItemDetails/itemId}} as used in the {{DigitalGoodsService/getDetails()}}
     method.
   * {{PurchaseDetails/purchaseToken}} is an abitrary token representing a
@@ -409,15 +410,3 @@ A <dfn>canonical {{PaymentCurrencyAmount}}</dfn> is a
 
 <!-- TODO figure out how to get iso-8601 to link to a definition. -->
 <dfn>iso-8601</dfn> is a standard for date and time representations.
-
-
-
-
-
-
-
-
-
-
-
-
