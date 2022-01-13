@@ -99,7 +99,7 @@ The item ID is a string representing the primary key of the items, configured in
 
 The item’s `price` is a <code>[PaymentCurrencyAmount](https://developer.mozilla.org/en-US/docs/Web/API/PaymentCurrencyAmount)</code> containing the current price of the item in the user’s current region and currency. It is designed to be formatted for the user’s current locale using <code>[Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)</code>, as shown above.
 
-The item can optionally have various periods, specified using [ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations). The introductory price period can run for multiple cycles, as specified by `introductoryPriceCycles`. For further discussion of periods and introductory price cycles, see [Issue#20](https://github.com/WICG/digital-goods/issues/20).
+The item can optionally have various periods, specified using [ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations). The introductory price period can run for multiple such periods, as specified by `introductoryPriceCycles`. For further discussion of periods and introductory price cycles, see [Issue#20](https://github.com/WICG/digital-goods/issues/20).
 
 ### Making a purchase
 
@@ -140,7 +140,7 @@ for (p of purchases) {
 }
 ```
 
-The `listPurchaseHistory` method allows a client to get a list of previous purchases by the user, regardless of current ownership state. Depending on the store support, this might be limited to a single purchase record per item.
+The `listPurchaseHistory` method allows a client to get a list of previous purchases by the user, regardless of current ownership state. Depending on the underlying service provider support, this might be limited to a single purchase record per item.
 
 ## Full API interface
 
