@@ -93,12 +93,13 @@ for (item of details) {
 }
 ```
 
-
 The returned `itemDetails` sequence may be in any order and may not include an item if it doesn't exist on the server (i.e. there is not a 1:1 correspondence between the input list and output).
  
 The item ID is a string representing the primary key of the items, configured in the store server. There is no function to get a list of item IDs; those should be hard-coded in the client code or fetched from the developer’s own server.
 
 The item’s `price` is a <code>[PaymentCurrencyAmount](https://developer.mozilla.org/en-US/docs/Web/API/PaymentCurrencyAmount)</code> containing the current price of the item in the user’s current region and currency. It is designed to be formatted for the user’s current locale using <code>[Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)</code>, as shown above.
+
+The item can optionally have various periods, specified using [ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations). The introductory price period can run for multiple such periods, as specified by `introductoryPriceCycles`. For further discussion of periods and introductory price cycles, see [Issue#20](https://github.com/WICG/digital-goods/issues/20).
 
 ### Making a purchase
 
@@ -139,10 +140,69 @@ for (p of purchases) {
 }
 ```
 
+The `listPurchaseHistory` method allows a client to get a list of previous purchases by the user, regardless of current ownership state. Depending on the underlying service provider support, this might be limited to a single purchase record per item.
+
 ## Full API interface
 
+### API v2.1
+Expected to be added in Chrome M100+. This is a non-breaking change adding additional methods and optional fields. Use of the new methods/fields will require developers to update supporting code in their apps, such as [Android Browser Helper](https://github.com/GoogleChrome/android-browser-helper).
+
+*   Adds to DigitalGoodsService
+    *   `Promise<sequence<PurchaseDetails>> listPurchaseHistory();`
+*   Adds to ItemDetails
+    *   `ItemType type;`
+    *   `sequence<DOMString> iconUrls;`
+    *   `unsigned short introductoryPriceCycles;`
+*   Adds `enum ItemType`
+
+```webidl
+[SecureContext]
+partial interface Window {
+  // Rejects the promise if there is no Digital Goods Service associated with
+  // the given service provider.
+  Promise<DigitalGoodsService> getDigitalGoodsService(DOMString serviceProvider);
+};
+
+[SecureContext]
+interface DigitalGoodsService {
+  Promise<sequence<ItemDetails>> getDetails(sequence<DOMString> itemIds);
+  
+  Promise<sequence<PurchaseDetails>> listPurchases();
+  
+  Promise<sequence<PurchaseDetails>> listPurchaseHistory();
+
+  Promise<void> consume(DOMString purchaseToken);
+};
+
+dictionary ItemDetails {
+  required DOMString itemId;
+  required DOMString title;
+  required PaymentCurrencyAmount price;
+  ItemType type;
+  DOMString description;
+  sequence<DOMString> iconUrls;
+  // Periods are specified as ISO 8601 durations.
+  // https://en.wikipedia.org/wiki/ISO_8601#Durations
+  DOMString subscriptionPeriod;
+  DOMString freeTrialPeriod;
+  PaymentCurrencyAmount introductoryPrice;
+  DOMString introductoryPricePeriod;
+  unsigned short introductoryPriceCycles;
+};
+
+enum ItemType {
+  "product",
+  "subscription",
+};
+
+dictionary PurchaseDetails {
+  required DOMString itemId;
+  required DOMString purchaseToken;
+};
+```
+
 ### API v2.0
-Origin trial expected to begin in Chrome M96.
+In Origin Trial in Chrome M96-M99.
 
 ```webidl
 [SecureContext]
