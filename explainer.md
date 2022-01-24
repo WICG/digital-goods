@@ -12,6 +12,7 @@ Authors: Matt Giuca \<<mgiuca@chromium.org>\>,
   + [Consuming a purchase](#consuming-a-purchase)
   + [Checking existing purchases](#checking-existing-purchases)
 * [Full API interface](#full-api-interface)
+  + [API v2.1](#api-v21)
   + [API v2.0](#api-v20)
   + [API v1.0 (deprecated)](#api-v10-deprecated)
 * [Formatting the price](#formatting-the-price)
@@ -180,14 +181,14 @@ dictionary ItemDetails {
   required PaymentCurrencyAmount price;
   ItemType type;
   DOMString description;
-  sequence<DOMString> iconUrls;
+  sequence<DOMString> iconURLs;
   // Periods are specified as ISO 8601 durations.
   // https://en.wikipedia.org/wiki/ISO_8601#Durations
   DOMString subscriptionPeriod;
   DOMString freeTrialPeriod;
   PaymentCurrencyAmount introductoryPrice;
   DOMString introductoryPricePeriod;
-  unsigned short introductoryPriceCycles;
+  [EnforceRange] unsigned long long introductoryPriceCycles;
 };
 
 enum ItemType {
