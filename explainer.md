@@ -152,8 +152,8 @@ Expected to be added in Chrome M100+. This is a non-breaking change adding addit
     *   `Promise<sequence<PurchaseDetails>> listPurchaseHistory();`
 *   Adds to ItemDetails
     *   `ItemType type;`
-    *   `sequence<DOMString> iconUrls;`
-    *   `unsigned short introductoryPriceCycles;`
+    *   `sequence<DOMString> iconURLs;`
+    *   `[EnforceRange] unsigned long long introductoryPriceCycles;`
 *   Adds `enum ItemType`
 
 ```webidl
