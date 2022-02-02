@@ -202,8 +202,7 @@ is usually a [=url-based payment method identifier=].
 
   1. Let |document| be the [=current settings object=]'s [=environment settings object/responsible document=].
   1. If |document| is not [=Document/fully active=], then return [=a promise rejected with=] an {{"InvalidStateError"}} {{DOMException}}.
-  1. If |document|'s [=origin=] is not [=same site=] with the [=environment/top-level origin=] return [=a promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
-  <!-- TODO Consider tightening this restriction to SameOrigin instead of SameSite. -->
+  1. If |document|'s [=origin=] is not [=same origin=] with the [=environment/top-level origin=] return [=a promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
   1. If |document| is not [=allowed to use=] the "[=payment=]" permission return [=a promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
   1. If |serviceProvider| is undefined or null or the empty string return [=a promise rejected with=] a {{TypeError}}.
   1. Let |result| be the result of performing the [=can make digital goods service algorithm=] given |serviceProvider| and |document|.
