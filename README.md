@@ -7,6 +7,7 @@ used to make the actual purchases).
 # Links
 
 * [Explainer](explainer.md)
+* [Spec](https://wicg.github.io/digital-goods/)
 
 # Contributing
 
