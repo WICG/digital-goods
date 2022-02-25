@@ -4,9 +4,8 @@
   <title>Digital Goods API</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version bbc364800, updated Mon Nov 15 13:57:55 2021 -0800" name="generator">
+  <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
   <link href="https://wicg.github.io/digital-goods/" rel="canonical">
-  <meta content="9f4f73b89a6e4d1b2e7c48259b367f3e95894fd9" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -588,7 +587,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Digital Goods API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-02-01">1 February 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-02-24">24 February 2022</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -713,7 +712,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <pre class="highlight"><c- a>const</c-> details <c- o>=</c-> <c- k>await</c-> digitalGoodsService
     <c- p>.</c->getDetails<c- p>([</c-><c- t>'shiny_sword'</c-><c- p>,</c-> <c- t>'gem'</c-><c- p>,</c-> <c- t>'monthly_subscription'</c-><c- p>]);</c->
 <c- k>for</c-> <c- p>(</c->item <c- k>of</c-> details<c- p>)</c-> <c- p>{</c->
-  <c- a>const</c-> priceStr <c- o>=</c-> <c- k>new</c-> Intl<c- p>.</c->NumberFormat<c- p>(</c->
+  <c- a>const</c-> priceStr <c- o>=</c-> <c- ow>new</c-> Intl<c- p>.</c->NumberFormat<c- p>(</c->
       locale<c- p>,</c->
       <c- p>{</c->style<c- o>:</c-> <c- t>'currency'</c-><c- p>,</c-> currency<c- o>:</c-> item<c- p>.</c->price<c- p>.</c->currency<c- p>}</c->
     <c- p>).</c->format<c- p>(</c->item<c- p>.</c->price<c- p>.</c->value<c- p>);</c->
@@ -742,7 +741,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <a class="self-link" href="#Purchase%20using%20Payment%20Request%20API"></a> 
 <pre class="highlight"><c- a>const</c-> details <c- o>=</c-> <c- k>await</c-> digitalGoodsService<c- p>.</c->getDetails<c- p>([</c-><c- t>'monthly_subscription'</c-><c- p>]);</c->
 <c- a>const</c-> item <c- o>=</c-> details<c- p>[</c-><c- mf>0</c-><c- p>];</c->
-<c- k>new</c-> PaymentRequest<c- p>(</c->
+<c- ow>new</c-> PaymentRequest<c- p>(</c->
   <c- p>[{</c->supportedMethods<c- o>:</c-> <c- t>'https://example.com/billing'</c-><c- p>,</c->
     data<c- o>:</c-> <c- p>{</c->itemId<c- o>:</c-> item<c- p>.</c->itemId<c- p>}}]);</c->
 </pre>
@@ -821,7 +820,7 @@ occurs. The <code class="idl"><a data-link-type="idl" href="#dom-window-getdigit
      <li data-md>
       <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active" id="ref-for-fully-active">fully active</a>, then return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with">a promise rejected with</a> an <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror">"InvalidStateError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code>.</p>
      <li data-md>
-      <p>If <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origin</a> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#same-site" id="ref-for-same-site">same site</a> with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin" id="ref-for-concept-environment-top-level-origin">top-level origin</a> return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with①">a promise rejected with</a> a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException①">DOMException</a></code>.</p>
+      <p>If <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origin</a> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#same-origin" id="ref-for-same-origin">same origin</a> with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin" id="ref-for-concept-environment-top-level-origin">top-level origin</a> return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with①">a promise rejected with</a> a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException①">DOMException</a></code>.</p>
      <li data-md>
       <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use" id="ref-for-allowed-to-use">allowed to use</a> the "<a data-link-type="dfn" href="#payment" id="ref-for-payment">payment</a>" permission return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with②">a promise rejected with</a> a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror①">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException②">DOMException</a></code>.</p>
      <li data-md>
@@ -1150,10 +1149,10 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
     <li><a href="#ref-for-responsible-document">2.1.1. getDigitalGoodsService() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-same-site">
-   <a href="https://html.spec.whatwg.org/multipage/origin.html#same-site">https://html.spec.whatwg.org/multipage/origin.html#same-site</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-same-origin">
+   <a href="https://html.spec.whatwg.org/multipage/origin.html#same-origin">https://html.spec.whatwg.org/multipage/origin.html#same-origin</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-same-site">2.1.1. getDigitalGoodsService() method</a>
+    <li><a href="#ref-for-same-origin">2.1.1. getDigitalGoodsService() method</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-environment-top-level-origin">
@@ -1310,7 +1309,7 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
      <li><span class="dfn-paneled" id="term-for-concept-origin">origin</span>
      <li><span class="dfn-paneled" id="term-for-concept-document-permissions-policy">permissions policy</span>
      <li><span class="dfn-paneled" id="term-for-responsible-document">responsible document</span>
-     <li><span class="dfn-paneled" id="term-for-same-site">same site</span>
+     <li><span class="dfn-paneled" id="term-for-same-origin">same origin</span>
      <li><span class="dfn-paneled" id="term-for-concept-environment-top-level-origin">top-level origin</span>
     </ul>
    <li>
