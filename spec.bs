@@ -261,17 +261,17 @@ is usually a [=url-based payment method identifier=].
     DOMString freeTrialPeriod;
     PaymentCurrencyAmount introductoryPrice;
     DOMString introductoryPricePeriod;
-    unsigned long long introductoryPriceCycles;
+    [EnforceRange] unsigned long long introductoryPriceCycles;
+  };
+
+  enum ItemType {
+    "product",
+    "subscription",
   };
 
   dictionary PurchaseDetails {
     required DOMString itemId;
     required DOMString purchaseToken;
-  };
-  
-  enum ItemType {
-    "product",
-    "subscription",
   };
 </xmp>
 
