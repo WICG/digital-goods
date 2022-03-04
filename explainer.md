@@ -146,7 +146,7 @@ The `listPurchaseHistory` method allows a client to get a list of previous purch
 ## Full API interface
 
 ### API v2.1
-Expected to be added in Chrome M100+. This is a non-breaking change adding additional methods and optional fields. Use of the new methods/fields will require developers to update supporting code in their apps, such as [Android Browser Helper](https://github.com/GoogleChrome/android-browser-helper).
+Expected to be added in Chrome M102+. This is a non-breaking change adding additional methods and optional fields. Use of the new methods/fields will require developers to update supporting code in their apps, such as [Android Browser Helper](https://github.com/GoogleChrome/android-browser-helper).
 
 *   Adds to DigitalGoodsService
     *   `Promise<sequence<PurchaseDetails>> listPurchaseHistory();`
