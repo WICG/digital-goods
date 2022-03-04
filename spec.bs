@@ -129,6 +129,20 @@ Note: This section is non-normative.
   a direct developer-to-provider API before granting entitlements.
 </div>
 
+## History of purchases ## {#history-of-purchases}
+
+<div class="example" id="History of purchases">
+  <xmp highlight="javascript">
+    const purchaseHistory = await digitalGoodsService.listPurchaseHistory();
+    for (p of purchaseHistory) {
+      DisplayPreviousPurchase(p.itemId);
+    }
+  </xmp>
+
+  The {{DigitalGoodsService/listPurchaseHistory()}} method allows a client
+  to list user's previous purchases.
+</div>
+
 ## Consuming a purchase ## {#consuming-a-purchase}
 
 <div class="example" id="Consuming a purchase">
@@ -231,6 +245,8 @@ is usually a [=url-based payment method identifier=].
 
     Promise<sequence<PurchaseDetails>> listPurchases();
 
+    Promise<sequence<PurchaseDetails>> listPurchaseHistory();
+
     Promise<undefined> consume(DOMString purchaseToken);
   };
 
@@ -238,16 +254,24 @@ is usually a [=url-based payment method identifier=].
     required DOMString itemId;
     required DOMString title;
     required PaymentCurrencyAmount price;
+    ItemType type;
     DOMString description;
+    sequence<DOMString> iconURLs;
     DOMString subscriptionPeriod;
     DOMString freeTrialPeriod;
     PaymentCurrencyAmount introductoryPrice;
     DOMString introductoryPricePeriod;
+    unsigned long long introductoryPriceCycles;
   };
 
   dictionary PurchaseDetails {
     required DOMString itemId;
     required DOMString purchaseToken;
+  };
+  
+  enum ItemType {
+    "product",
+    "subscription",
   };
 </xmp>
 
@@ -298,6 +322,20 @@ is usually a [=url-based payment method identifier=].
   1. Return [=a promise resolved with=] |result|.
 </div>
 
+### listPurchaseHistory() method ### {#listPurchaseHistory-method}
+
+<div algorithm>
+  When the <dfn method for="DigitalGoodsService">listPurchaseHistory()</dfn> method is
+  called, run the following steps:
+
+  1. Let |result| be the result of requesting information about the user's history of purchases from the digital goods service.
+  1. If |result| is an error, then return [=a promise rejected with=] an {{OperationError}}.
+  1. For each |itemDetails| in |result|:
+    1. |itemDetails|.itemId SHOULD NOT be the empty string.
+    1. |itemDetails|.purchaseToken SHOULD NOT be the empty string.
+  1. Return [=a promise resolved with=] |result|.
+</div>
+
 ### consume() method ### {#consume-method}
 
 Note: Consume in this context means to use up a purchase. The user is expected
@@ -334,9 +372,12 @@ to no longer be entitled to the purchase after it is consumed.
     be formatted as shown in the [[#querying-item-details]] example above for
     display to the user. It is expected to have been localized for the user by
     the {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}}.
+  * {{ItemDetails/type}} is either |"product"| or |"subscription"|.
   * {{ItemDetails/description}} is the full description of the item to display
     to the user. It is expected to have been localized for the user by the
     {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}}.
+  * {{ItemDetails/iconURLs}} is a list of icons that provide a visual
+    description of the item.
   * {{ItemDetails/subscriptionPeriod}} is the time period, specified as an
     <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration</a>,
     in which the item
@@ -360,6 +401,8 @@ to no longer be entitled to the purchase after it is consumed.
     <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration</a>,
     in which the item costs the {{ItemDetails/introductoryPrice}}. After this
     period the item is epected to cost the {{ItemDetails/price}}.
+  * {{ItemDetails/introductoryPriceCycles}} is the number of subscription cycles
+    during which the {{ItemDetails/introductoryPrice}} is effective.
 </div>
 
 ## PurchaseDetails dictionary ## {#purchaseDetails-dictionary}
