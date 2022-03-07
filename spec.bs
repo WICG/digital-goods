@@ -141,7 +141,7 @@ Note: This section is non-normative.
 
   The {{DigitalGoodsService/listPurchaseHistory()}} method allows a client
   to list the latest purchases for each item type ever purchased by the
-  user. May include expired or consumed purchases. Some stores may not keep
+  user. Can include expired or consumed purchases. Some stores might not keep
   such history, in which case it would return the same data as the
   {{DigitalGoodsService/listPurchases()}} method.
 </div>
