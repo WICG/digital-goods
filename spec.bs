@@ -129,6 +129,23 @@ Note: This section is non-normative.
   a direct developer-to-provider API before granting entitlements.
 </div>
 
+## Checking past purchases ## {#checking-past-purchases}
+
+<div class="example" id="Checking purchases">
+  <xmp highlight="javascript">
+    const purchaseHistory = await digitalGoodsService.listPurchaseHistory();
+    for (p of purchaseHistory) {
+      DisplayPreviousPurchase(p.itemId);
+    }
+  </xmp>
+
+  The {{DigitalGoodsService/listPurchaseHistory()}} method allows a client
+  to list the latest purchases for each item type ever purchased by the
+  user. Can include expired or consumed purchases. Some stores might not keep
+  such history, in which case it would return the same data as the
+  {{DigitalGoodsService/listPurchases()}} method.
+</div>
+
 ## Consuming a purchase ## {#consuming-a-purchase}
 
 <div class="example" id="Consuming a purchase">
@@ -231,6 +248,8 @@ is usually a [=url-based payment method identifier=].
 
     Promise<sequence<PurchaseDetails>> listPurchases();
 
+    Promise<sequence<PurchaseDetails>> listPurchaseHistory();
+
     Promise<undefined> consume(DOMString purchaseToken);
   };
 
@@ -238,11 +257,19 @@ is usually a [=url-based payment method identifier=].
     required DOMString itemId;
     required DOMString title;
     required PaymentCurrencyAmount price;
+    ItemType type;
     DOMString description;
+    sequence<DOMString> iconURLs;
     DOMString subscriptionPeriod;
     DOMString freeTrialPeriod;
     PaymentCurrencyAmount introductoryPrice;
     DOMString introductoryPricePeriod;
+    [EnforceRange] unsigned long long introductoryPriceCycles;
+  };
+
+  enum ItemType {
+    "product",
+    "subscription",
   };
 
   dictionary PurchaseDetails {
@@ -298,6 +325,20 @@ is usually a [=url-based payment method identifier=].
   1. Return [=a promise resolved with=] |result|.
 </div>
 
+### listPurchaseHistory() method ### {#listPurchaseHistory-method}
+
+<div algorithm>
+  When the <dfn method for="DigitalGoodsService">listPurchaseHistory()</dfn> method is
+  called, run the following steps:
+
+  1. Let |result| be the result of requesting information about the latest purchases for each item type ever purchased by the user.
+  1. If |result| is an error, then return [=a promise rejected with=] an {{OperationError}}.
+  1. For each |itemDetails| in |result|:
+    1. |itemDetails|.itemId SHOULD NOT be the empty string.
+    1. |itemDetails|.purchaseToken SHOULD NOT be the empty string.
+  1. Return [=a promise resolved with=] |result|.
+</div>
+
 ### consume() method ### {#consume-method}
 
 Note: Consume in this context means to use up a purchase. The user is expected
@@ -334,9 +375,12 @@ to no longer be entitled to the purchase after it is consumed.
     be formatted as shown in the [[#querying-item-details]] example above for
     display to the user. It is expected to have been localized for the user by
     the {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}}.
+  * {{ItemDetails/type}} is one of the values of the {{ItemType}} enum.
   * {{ItemDetails/description}} is the full description of the item to display
     to the user. It is expected to have been localized for the user by the
     {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}}.
+  * {{ItemDetails/iconURLs}} is a list of icons that provide a visual
+    description of the item.
   * {{ItemDetails/subscriptionPeriod}} is the time period, specified as an
     <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration</a>,
     in which the item
@@ -360,6 +404,8 @@ to no longer be entitled to the purchase after it is consumed.
     <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration</a>,
     in which the item costs the {{ItemDetails/introductoryPrice}}. After this
     period the item is epected to cost the {{ItemDetails/price}}.
+  * {{ItemDetails/introductoryPriceCycles}} is the number of subscription cycles
+    during which the {{ItemDetails/introductoryPrice}} is effective.
 </div>
 
 ## PurchaseDetails dictionary ## {#purchaseDetails-dictionary}
@@ -368,8 +414,8 @@ to no longer be entitled to the purchase after it is consumed.
 
 <div class="note">
   A {{PurchaseDetails}} dictionary represents information about a digital item
-  from a {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}} to
-  which the user is currently entitled.
+  from a {{Window/getDigitalGoodsService(serviceProvider)/serviceProvider}}
+  which the user has purchased at some point.
 
   * {{PurchaseDetails/itemId}} identifies a particular digital item in the
     current app's inventory. It is expected to be unique within the app but
