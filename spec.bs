@@ -217,7 +217,7 @@ is usually a [=url-based payment method identifier=].
   <dfn method for="Window">getDigitalGoodsService(|serviceProvider|)</dfn>
   method is called, run the following steps:
 
-  1. Let |document| be the [=current settings object=]'s [=environment settings object/responsible document=].
+  1. Let |document| be the [=current settings object=]'s [=relevant global object=]'s [=associated `Document`=].
   1. If |document| is not [=Document/fully active=], then return [=a promise rejected with=] an {{"InvalidStateError"}} {{DOMException}}.
   1. If |document|'s [=origin=] is not [=same origin=] with the [=environment/top-level origin=] return [=a promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
   1. If |document| is not [=allowed to use=] the "[=payment=]" permission return [=a promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
