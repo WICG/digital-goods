@@ -831,7 +831,7 @@ occurs. The <code class="idl"><a data-link-type="idl" href="#dom-window-getdigit
      When the <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="method" data-export id="dom-window-getdigitalgoodsservice"><code>getDigitalGoodsService(<var>serviceProvider</var>)</code></dfn> method is called, run the following steps: 
     <ol>
      <li data-md>
-      <p>Let <var>document</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object">current settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>'s [=associated <code>Document</code>=].</p>
+      <p>Let <var>document</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object">current settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window">associated <code>Document</code></a>.</p>
      <li data-md>
       <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active" id="ref-for-fully-active">fully active</a>, then return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with">a promise rejected with</a> an <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror">"InvalidStateError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code>.</p>
      <li data-md>
@@ -1179,6 +1179,12 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
     <li><a href="#ref-for-allowed-to-use①">3. Permissions Policy integration</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-document-window">
+   <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window">https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-document-window">2.1.1. getDigitalGoodsService() method</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-current-settings-object">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object</a><b>Referenced in:</b>
    <ul>
@@ -1385,6 +1391,7 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
     <ul>
      <li><span class="dfn-paneled" id="term-for-window">Window</span>
      <li><span class="dfn-paneled" id="term-for-allowed-to-use">allowed to use</span>
+     <li><span class="dfn-paneled" id="term-for-concept-document-window">associated document</span>
      <li><span class="dfn-paneled" id="term-for-current-settings-object">current settings object</span>
      <li><span class="dfn-paneled" id="term-for-fully-active">fully active</span>
      <li><span class="dfn-paneled" id="term-for-concept-origin">origin</span>
