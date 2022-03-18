@@ -587,7 +587,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Digital Goods API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-03-08">8 March 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-03-18">18 March 2022</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -831,7 +831,7 @@ occurs. The <code class="idl"><a data-link-type="idl" href="#dom-window-getdigit
      When the <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="method" data-export id="dom-window-getdigitalgoodsservice"><code>getDigitalGoodsService(<var>serviceProvider</var>)</code></dfn> method is called, run the following steps: 
     <ol>
      <li data-md>
-      <p>Let <var>document</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object">current settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-document" id="ref-for-responsible-document">responsible document</a>.</p>
+      <p>Let <var>document</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object">current settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>'s [=associated <code>Document</code>=].</p>
      <li data-md>
       <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active" id="ref-for-fully-active">fully active</a>, then return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with">a promise rejected with</a> an <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror">"InvalidStateError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code>.</p>
      <li data-md>
@@ -859,7 +859,7 @@ occurs. The <code class="idl"><a data-link-type="idl" href="#dom-window-getdigit
   different contexts.</p>
    </div>
    <h3 class="heading settled" data-level="2.2" id="digitalgoodsservice-interface"><span class="secno">2.2. </span><span class="content">DigitalGoodsService interface</span><a class="self-link" href="#digitalgoodsservice-interface"></a></h3>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext①"><c- g>SecureContext</c-></a>] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="digitalgoodsservice"><code><c- g>DigitalGoodsService</c-></code></dfn> {
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext①"><c- g>SecureContext</c-></a>] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="digitalgoodsservice"><code><c- g>DigitalGoodsService</c-></code></dfn> {
 
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#dictdef-itemdetails" id="ref-for-dictdef-itemdetails②"><c- n>ItemDetails</c-></a>>> <a class="idl-code" data-link-type="method" href="#dom-digitalgoodsservice-getdetails" id="ref-for-dom-digitalgoodsservice-getdetails①"><c- g>getDetails</c-></a>(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence①"><c- b>sequence</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a>> <dfn class="idl-code" data-dfn-for="DigitalGoodsService/getDetails(itemIds)" data-dfn-type="argument" data-export id="dom-digitalgoodsservice-getdetails-itemids-itemids"><code><c- g>itemIds</c-></code><a class="self-link" href="#dom-digitalgoodsservice-getdetails-itemids-itemids"></a></dfn>);
 
@@ -1203,10 +1203,10 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
     <li><a href="#ref-for-concept-document-permissions-policy">3. Permissions Policy integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-responsible-document">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-document">https://html.spec.whatwg.org/multipage/webappapis.html#responsible-document</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-concept-relevant-global">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-responsible-document">2.1.1. getDigitalGoodsService() method</a>
+    <li><a href="#ref-for-concept-relevant-global">2.1.1. getDigitalGoodsService() method</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-same-origin">
@@ -1282,6 +1282,12 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
    <a href="https://webidl.spec.whatwg.org/#EnforceRange">https://webidl.spec.whatwg.org/#EnforceRange</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-EnforceRange">2.2. DigitalGoodsService interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-Exposed">
+   <a href="https://webidl.spec.whatwg.org/#Exposed">https://webidl.spec.whatwg.org/#Exposed</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-Exposed">2.2. DigitalGoodsService interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-invalidstateerror">
@@ -1383,7 +1389,7 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
      <li><span class="dfn-paneled" id="term-for-fully-active">fully active</span>
      <li><span class="dfn-paneled" id="term-for-concept-origin">origin</span>
      <li><span class="dfn-paneled" id="term-for-concept-document-permissions-policy">permissions policy</span>
-     <li><span class="dfn-paneled" id="term-for-responsible-document">responsible document</span>
+     <li><span class="dfn-paneled" id="term-for-concept-relevant-global">relevant global object</span>
      <li><span class="dfn-paneled" id="term-for-same-origin">same origin</span>
      <li><span class="dfn-paneled" id="term-for-concept-environment-top-level-origin">top-level origin</span>
     </ul>
@@ -1416,6 +1422,7 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
      <li><span class="dfn-paneled" id="term-for-idl-DOMException">DOMException</span>
      <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
      <li><span class="dfn-paneled" id="term-for-EnforceRange">EnforceRange</span>
+     <li><span class="dfn-paneled" id="term-for-Exposed">Exposed</span>
      <li><span class="dfn-paneled" id="term-for-invalidstateerror">InvalidStateError</span>
      <li><span class="dfn-paneled" id="term-for-notallowederror">NotAllowedError</span>
      <li><span class="dfn-paneled" id="term-for-operationerror">OperationError</span>
@@ -1458,7 +1465,7 @@ in the document will be <a data-link-type="dfn" href="https://html.spec.whatwg.o
       <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-window-getdigitalgoodsservice-serviceprovider-serviceprovider"><code><c- g>serviceProvider</c-></code></a>);
 };
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext"><c- g>SecureContext</c-></a>] <c- b>interface</c-> <a href="#digitalgoodsservice"><code><c- g>DigitalGoodsService</c-></code></a> {
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext"><c- g>SecureContext</c-></a>] <c- b>interface</c-> <a href="#digitalgoodsservice"><code><c- g>DigitalGoodsService</c-></code></a> {
 
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#dictdef-itemdetails"><c- n>ItemDetails</c-></a>>> <a class="idl-code" data-link-type="method" href="#dom-digitalgoodsservice-getdetails"><c- g>getDetails</c-></a>(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a>> <a href="#dom-digitalgoodsservice-getdetails-itemids-itemids"><code><c- g>itemIds</c-></code></a>);
 
