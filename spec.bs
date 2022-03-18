@@ -242,7 +242,7 @@ is usually a [=url-based payment method identifier=].
 ## DigitalGoodsService interface ## {#digitalgoodsservice-interface}
 
 <xmp class="idl">
-  [SecureContext] interface DigitalGoodsService {
+  [Exposed=Window, SecureContext] interface DigitalGoodsService {
 
     Promise<sequence<ItemDetails>> getDetails(sequence<DOMString> itemIds);
 
