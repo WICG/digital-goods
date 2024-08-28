@@ -444,7 +444,7 @@ method (trying to call the method will throw).
 # Additional Definitions # {#additional-definitions}
 <!-- TODO Not sure how to reference this correctly. Needs to be exported from the other spec? -->
 The "<dfn>payment</dfn>" permission is a [[permissions-policy]] feature
-<a href="https://www.w3.org/TR/payment-request/#dfn-payment-permission">defined
+<a href="https://www.w3.org/TR/payment-request/#permissions-policy">defined
   in the payment-request spec</a>.
 
 <!-- TODO Not sure how to reference this correctly. Needs to be exported from the other spec? -->
